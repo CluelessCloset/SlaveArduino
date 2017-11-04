@@ -14,6 +14,7 @@ const int LED_OFF = 0x02;
 const int ADC_READ = 0x03;
 
 const int ACK = 0xEE;
+const int ERR = 0xAA;
 
 int lastCmd = 0;
 
@@ -26,29 +27,18 @@ void setup() {
   Serial.begin(9600);           // start serial for output
   
   //get the hard-coded address of this slave
-  Serial.println("configuring pins 0-3 as INPUT_PULLUP");
-  pinMode(0, INPUT);
-  pinMode(1, INPUT);
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-
-  int v0 = digitalRead(0);
-  int v1 = digitalRead(1);
-  int v2 = digitalRead(2);
-  int v3 = digitalRead(3);
-
-  Serial.print(v0);
-  Serial.print("\n");
-  Serial.print(v1);
-  Serial.print("\n");
-  Serial.print(v2);
-  Serial.print("\n");
-  Serial.print(v3);
-  Serial.print("\n");
+  Serial.println("configuring pins 0-6 as INPUT");
+  int addr = 0;
+  int readIn = 0;
+  for(int i = 2; i < 8; i++)
+  {
+    pinMode(i, INPUT);
+    readIn = digitalRead(i);
+    Serial.println(readIn);
+    addr += (readIn << (i-2));
+  }
   
-  int addr = v0 +(v1 << 1) + (v2 << 2) + (v3 << 3);
-  Serial.print(addr);
-  Serial.print("\n");
+  Serial.println(addr);
 
   pinMode(ledPin, OUTPUT);
   
