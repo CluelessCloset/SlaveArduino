@@ -49,13 +49,14 @@ void setup() {
 }
 
 void loop() {
-  weightSensorValue = analogRead(weightSensor);
-  delay(100); //just respond to events while updating the force sensor
+  weightSensorValue = (15*weightSensorValue + analogRead(weightSensor)) / 16; //moving average of sensor value
+  Serial.println(weightSensorValue);
 }
 
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany) {
+  Serial.println("receiveEvent observed");
   lastCmd = Wire.read(); // receive first as a character
   if(howMany != 1)
   {
@@ -93,6 +94,7 @@ void receiveEvent(int howMany) {
 //send them back
 void requestEvent()
 {
+  Serial.println("requestEvent observed");
   switch(lastCmd)
   {
     case PING:
