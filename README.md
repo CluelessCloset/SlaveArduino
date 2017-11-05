@@ -14,7 +14,7 @@ smooth the data.
 ## Pinout
 
 **Pin**   |   **function**
------------------------------
+-----------|------------------
 A0  |  Reads force sensor
 A4  | I2C (SDA)
 A5  | I2C (SCL)
